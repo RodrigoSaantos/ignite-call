@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 import { Container, Form, Header, FormError } from './styles'
 import { api } from '@/lib/axios'
+import { AxiosError } from 'axios'
 
 const registerFormSchema = z.object({
   username: z
@@ -49,6 +50,10 @@ export default function Register() {
         username: data.username,
       })
     } catch (err) {
+      if (err instanceof AxiosError && err?.response?.data?.message) {
+        alert(err.response.data.message)
+        return
+      }
       console.log(err)
     }
   }
